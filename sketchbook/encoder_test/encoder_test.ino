@@ -1,10 +1,10 @@
 #include <Encoder.h>
 
-Encoder enc(3,2);
+Encoder enc(2,3);
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.println("Begin");
 }
 
 long pos = -999;

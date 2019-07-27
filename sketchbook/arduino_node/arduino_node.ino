@@ -1,10 +1,15 @@
 #include <ros.h>
 #include <RC/pwmout.h>
+#include <std_msgs/Float32.h>
 #include <Servo.h>
+#include <Encoder.h>
 
 ros::NodeHandle nh;
+std_msgs::Float32 encoderMessage;
+
 Servo servo;
 Servo motor;
+Encoder enc(3,2);
 
 //msg: [-1.0, 1.0]
 void callback(const RC::pwmout& msg){
@@ -18,18 +23,25 @@ int percentToMicroSeconds(double percent){
 }
 
 ros::Subscriber<RC::pwmout> sub("pwmout", &callback);
+ros::Publisher pub("encoder", &encoderMessage);
 
-void setup() {
+long encPos = -999;
+
   nh.initNode();
+  nh.advertise(pub);
   nh.subscribe(sub);
 }
 
 void loop() {
-  nh.spinOnce();
-  delay(10);
+  encPos = enc.read();
+  encoderMessage.data = encPos;
+  pub.publish(&encoderMessage);
+  
   if (nh.connected()){
     if(!servo.attached()){servo.attach(10);}
     if(!motor.attached()){motor.attach(8);}
   }
-
+  
+  nh.spinOnce();
+  delay(10);
 }
