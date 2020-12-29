@@ -1,6 +1,6 @@
 # Arduino
 
-An Arduino Uno receives a custom ROS message from the Jetson TX2 and writes PWM signals to the servo and motor controller.
+An Arduino Uno receives a custom ROS message from the Jetson TX2 and writes PWM signals to the servo and motor controller. Also reads from a quadrature encoder connected to the gearbox and sends encoder data to the Jetson.
 
 Use `./upload` to upload the `arduino_node.ino` sketch from command line without the IDE.
 
